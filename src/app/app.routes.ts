@@ -14,6 +14,13 @@ export const routes: Routes = [
                     ),
             },
             {
+                path: 'create',
+                loadComponent: () =>
+                    import(
+                        './features/contacts/contact-form/contact-form.component'
+                    ),
+            },
+            {
                 path: ':id',
                 loadComponent: () =>
                     import(
