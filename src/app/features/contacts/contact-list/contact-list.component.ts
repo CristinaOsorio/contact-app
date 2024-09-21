@@ -1,9 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPencil, faSearch, faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+    faPencil,
+    faSearch,
+    faUsers,
+    faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { ContactService } from '../../../core/services/contact.service';
 import { Contact } from '../../../core/interfaces/contact.interface';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-contact-list',
@@ -15,12 +20,15 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 export default class ContactListComponent implements OnInit {
     faSearch = faSearch;
     faPencil = faPencil;
+    faTrash = faTrash;
     faUsers = faUsers;
 
     contacts = signal<Contact[]>([]);
     contactDetails = signal<Contact | null>(null);
+    isDelete = false;
 
     private contactService = inject(ContactService);
+    private router = inject(Router);
 
     ngOnInit(): void {
         this.contactService.getAll().subscribe((res) => {
@@ -47,5 +55,26 @@ export default class ContactListComponent implements OnInit {
 
     stopPropagation(event: Event): void {
         event.stopPropagation();
+    }
+
+    deleteContact(event: Event, contact: Contact): void {
+        event.stopPropagation();
+        this.isDelete = true;
+        this.contactDetails.set(contact);
+    }
+
+    acceptDelete() {
+        const id = this.contactDetails()!.id;
+        this.isDelete = false;
+        this.contactService.delete(id).subscribe((data) => {
+            this.contacts.update((prev) => prev.filter((c) => c.id !== id));
+            this.contactDetails.set(null);
+            this.router.navigate(['contacts']);
+        });
+    }
+
+    cancel() {
+        this.isDelete = false;
+        this.contactDetails.set(null);
     }
 }
