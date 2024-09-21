@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSearch, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faSearch, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { ContactService } from '../../../core/services/contact.service';
 import { Contact } from '../../../core/interfaces/contact.interface';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -14,6 +14,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 })
 export default class ContactListComponent implements OnInit {
     faSearch = faSearch;
+    faPencil = faPencil;
     faUsers = faUsers;
 
     contacts = signal<Contact[]>([]);
@@ -42,5 +43,9 @@ export default class ContactListComponent implements OnInit {
 
     getFirstEmail(contact: Contact): string {
         return contact.emails?.[0]?.address || 'Sin email';
+    }
+
+    stopPropagation(event: Event): void {
+        event.stopPropagation();
     }
 }

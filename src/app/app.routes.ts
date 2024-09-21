@@ -28,6 +28,13 @@ export const routes: Routes = [
                     ),
             },
             {
+                path: ':id/edit',
+                loadComponent: () =>
+                    import(
+                        './features/contacts/contact-form/contact-form.component'
+                    ),
+            },
+            {
                 path: '**',
                 pathMatch: 'full',
                 redirectTo: '',

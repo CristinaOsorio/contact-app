@@ -40,7 +40,7 @@
 
             @for(contact of contacts(); track $index) {
             <li
-                class="flex flex-col md:flex-row items-center py-4 px-6 cursor-pointer hover:bg-slate-100"
+                class="group flex flex-col md:flex-row items-center py-4 px-6 cursor-pointer hover:bg-slate-100"
                 [routerLink]="[contact.id]"
                 routerLinkActive="bg-slate-100"
             >
@@ -67,6 +67,14 @@
                         contact.company
                     }}</span>
                 </div>
+
+                <a
+                    class="hidden group-hover:flex justify-center items-center size-7 min-w-7 ml-4 text-blue-500 cursor-pointer hover:rounded-full hover:bg-blue-500 hover:text-white"
+                    [routerLink]="[contact.id, 'edit']"
+                    (click)="stopPropagation($event)"
+                >
+                    <fa-icon [icon]="faPencil"></fa-icon>
+                </a>
             </li>
             }
         </ul>

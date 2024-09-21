@@ -1,7 +1,17 @@
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Contact } from '../../../core/interfaces/contact.interface';
+import {
+    Component,
+    inject,
+    Input,
+    OnChanges,
+    SimpleChange,
+    SimpleChanges,
+} from '@angular/core';
+import {
+    Contact,
+    UpdateContact,
+} from '../../../core/interfaces/contact.interface';
 import {
     FormArray,
     FormBuilder,
@@ -19,29 +29,41 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     templateUrl: './contact-form.component.html',
     styleUrl: './contact-form.component.css',
 })
-export default class ContactFormComponent {
-    contactForm: FormGroup;
+export default class ContactFormComponent implements OnChanges {
+    fb = inject(FormBuilder);
+    contactService = inject(ContactService);
+
+    @Input() id?: string;
+
+    contactForm: FormGroup = this.fb.group({
+        name: ['', Validators.required],
+        notes: [''],
+        birthday: [''],
+        website: [''],
+        company: [''],
+        phoneNumbers: this.fb.array([]),
+        emails: this.fb.array([]),
+        addresses: this.fb.array([]),
+    });
+    contact: Contact | null = null;
 
     faTrash = faTrash;
     faPlus = faPlus;
 
-    constructor(
-        private fb: FormBuilder,
-        private contactService: ContactService
-    ) {
-        this.contactForm = this.fb.group({
-            name: ['', Validators.required],
-            notes: [''],
-            birthday: [''],
-            website: [''],
-            company: [''],
-            phoneNumbers: this.fb.array([]),
-            emails: this.fb.array([]),
-            addresses: this.fb.array([]),
-        });
-    }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['id'] && changes['id'].currentValue) {
+            this.contactService
+                .getById(Number(this.id))
+                .subscribe((contact) => {
+                    this.contact = contact as Contact;
 
-    ngOnInit(): void {}
+                    this.phoneNumbers.clear();
+                    this.emails.clear();
+                    this.addresses.clear();
+                    this.loadContactData(this.contact);
+                });
+        }
+    }
 
     get phoneNumbers(): FormArray {
         return this.contactForm.get('phoneNumbers') as FormArray;
@@ -57,7 +79,6 @@ export default class ContactFormComponent {
 
     addPhoneNumber(): void {
         const phoneFormGroup = this.fb.group({
-            id: [0],
             number: ['', Validators.required],
         });
         this.phoneNumbers.push(phoneFormGroup);
@@ -65,7 +86,6 @@ export default class ContactFormComponent {
 
     addEmail(): void {
         const emailFormGroup = this.fb.group({
-            id: [0],
             address: ['', Validators.required],
         });
         this.emails.push(emailFormGroup);
@@ -73,7 +93,6 @@ export default class ContactFormComponent {
 
     addAddress(): void {
         const addressFormGroup = this.fb.group({
-            id: [0],
             location: ['', Validators.required],
         });
         this.addresses.push(addressFormGroup);
@@ -91,12 +110,63 @@ export default class ContactFormComponent {
         this.addresses.removeAt(index);
     }
 
+    loadContactData(contact: Contact): void {
+        this.phoneNumbers.clear();
+        this.emails.clear();
+        this.addresses.clear();
+
+        this.contactForm.patchValue({
+            name: contact.name,
+            notes: contact.notes,
+            birthday: contact.birthday,
+            website: contact.website,
+            company: contact.company,
+        });
+
+        contact.phoneNumbers?.forEach((phone) => {
+            this.phoneNumbers.push(
+                this.fb.group({
+                    id: [phone.id],
+                    number: [phone.number, Validators.required],
+                })
+            );
+        });
+
+        contact.emails?.forEach((email) => {
+            this.emails.push(
+                this.fb.group({
+                    id: [email.id],
+                    address: [email.address, Validators.required],
+                })
+            );
+        });
+
+        contact.addresses?.forEach((address) => {
+            this.addresses.push(
+                this.fb.group({
+                    id: [address.id],
+                    location: [address.location, Validators.required],
+                })
+            );
+        });
+    }
+
     onSubmit(): void {
         if (this.contactForm.invalid) {
             return this.contactForm.markAllAsTouched();
         }
 
-        const contact: Contact = this.contactForm.value;
+        const contact: UpdateContact = this.contactForm.value;
+
+        if (this.contact) {
+            this.contactService
+                .update(Number(this.id), contact)
+                .subscribe((data) => {
+                    console.log('Contacto actualizado con éxito', data);
+                });
+            return;
+        }
+
         this.contactService.create(contact).subscribe(() => {
             console.log('Contacto creado con éxito', contact);
         });
