@@ -1,0 +1,44 @@
+<div class="w-full overflow-hiddend">
+    <div class="flex flex-col p-4">
+        <div class="flex">
+            <div
+                class="flex justify-center items-center size-16 min-w-16 rounded-full bg-blue-500 text-white font-bold text-4xl text-center mr-4"
+            >
+                {{ contact.name[0] }}
+            </div>
+            <h1
+                class="w-full text-left font-semibold my-4 sm:mx-4 xs:pl-4 text-gray-800 lg:text-3xl md:text-2xl sm:text-3xl xs:text-xl"
+            >
+                {{ contact.name }}
+            </h1>
+        </div>
+
+        <div class="w-full rounded-lg pt-4 mx-auto mt-5 p-5">
+            <ul class="mt-2 text-gray-500">
+                @for (info of contactInfo; track $index) {
+                <li class="flex flex-col md:flex-row border-b py-2">
+                    <div class="w-32 min-w-32">
+                        <fa-icon
+                            class="mr-2 w-5 min-w-20"
+                            [icon]="info.icon"
+                        ></fa-icon
+                        >{{ info.label }}
+                    </div>
+                    <div class="text-gray-900">
+                        @if(isString(info.value)){
+                        <p class="pb-2">
+                            {{ info.value }}
+                        </p>
+                        } @else { @for (item of info.value; track $index) {
+
+                        <p class="pb-2">
+                            {{ item.value }}
+                        </p>
+                        } }
+                    </div>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

@@ -69,7 +69,10 @@
         </ul>
     </section>
 
-    <section class="w-1/2 bg-white border shadow-lg overflow-auto scrollable">
+    <section
+        class="w-1/2 bg-white border shadow-lg overflow-auto scrollable transition duration-500"
+    >
+        @if (!contactDetails()){
         <div
             class="h-full flex flex-col justify-center items-center bg-gray-50 p-5 text-center"
         >
@@ -93,5 +96,8 @@
                 <span class="text-blue-600 font-bold">es gratis!</span>
             </p>
         </div>
+        } @else {
+        <app-contact-detail [contact]="contactDetails()!"></app-contact-detail>
+        }
     </section>
 </main>

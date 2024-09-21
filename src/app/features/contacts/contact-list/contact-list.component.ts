@@ -1,17 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-    faAddressBook,
-    faSearch,
-    faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { ContactService } from '../../../core/services/contact.service';
 import { Contact } from '../../../core/interfaces/contact.interface';
+import { ContactDetailComponent } from '../components/contact-detail/contact-detail.component';
 
 @Component({
     selector: 'app-contact-list',
     standalone: true,
-    imports: [FontAwesomeModule],
+    imports: [FontAwesomeModule, ContactDetailComponent],
     templateUrl: './contact-list.component.html',
     styleUrl: './contact-list.component.css',
 })
@@ -27,13 +24,12 @@ export default class ContactListComponent implements OnInit {
     ngOnInit(): void {
         this.contactService.getAll().subscribe((res) => {
             this.contacts.set(res.data);
-            this.contactDetails.set(res.data[0]);
+            this.contactDetails.set(res.data[0] || null);
         });
     }
 
     openContactDetails(contact: Contact): void {
         this.contactDetails.set(contact);
-        console.log(this.contactDetails());
     }
 
     createContact() {
