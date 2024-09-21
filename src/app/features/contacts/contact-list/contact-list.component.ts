@@ -3,12 +3,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSearch, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { ContactService } from '../../../core/services/contact.service';
 import { Contact } from '../../../core/interfaces/contact.interface';
-import { ContactDetailComponent } from '../components/contact-detail/contact-detail.component';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-contact-list',
     standalone: true,
-    imports: [FontAwesomeModule, ContactDetailComponent],
+    imports: [FontAwesomeModule, RouterOutlet, RouterModule],
     templateUrl: './contact-list.component.html',
     styleUrl: './contact-list.component.css',
 })
