@@ -1,12 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+    faAddressBook,
+    faSearch,
+    faUsers,
+} from '@fortawesome/free-solid-svg-icons';
+import { ContactService } from '../../../core/services/contact.service';
+import { Contact } from '../../../core/interfaces/contact.interface';
 
 @Component({
-  selector: 'app-contact-list',
-  standalone: true,
-  imports: [],
-  templateUrl: './contact-list.component.html',
-  styleUrl: './contact-list.component.css'
+    selector: 'app-contact-list',
+    standalone: true,
+    imports: [FontAwesomeModule],
+    templateUrl: './contact-list.component.html',
+    styleUrl: './contact-list.component.css',
 })
-export default class ContactListComponent {
+export default class ContactListComponent implements OnInit {
+    faSearch = faSearch;
+    faUsers = faUsers;
 
+    contacts = signal<Contact[]>([]);
+    contactDetails = signal<Contact | null>(null);
+
+    private contactService = inject(ContactService);
+
+    ngOnInit(): void {
+        this.contactService.getAll().subscribe((res) => {
+            this.contacts.set(res.data);
+            this.contactDetails.set(res.data[0]);
+        });
+    }
+
+    openContactDetails(contact: Contact): void {
+        this.contactDetails.set(contact);
+        console.log(this.contactDetails());
+    }
+
+    createContact() {
+        console.log('create');
+    }
+
+    getFirstPhoneNumber(contact: Contact): string {
+        return contact.phoneNumbers?.[0]?.number || 'Sin teléfono';
+    }
+
+    getFirstEmail(contact: Contact): string {
+        return contact.emails?.[0]?.address || 'Sin email';
+    }
 }

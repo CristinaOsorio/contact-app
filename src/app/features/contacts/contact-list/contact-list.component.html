@@ -1,1 +1,97 @@
-<p>contact-list works!</p>
+<main class="h-screen max-h-screen flex flex-row">
+    <section class="w-1/2 bg-white p-4 border shadow-lg overflow-y-auto">
+        <div class="relative w-full">
+            <div
+                class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none"
+            >
+                <fa-icon
+                    class="w-4 h-4 text-gray-500 dark:text-gray-400 mb-2"
+                    [icon]="faSearch"
+                ></fa-icon>
+            </div>
+            <input
+                type="text"
+                name="search"
+                id="table-search-users"
+                autocomplete="off"
+                class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 w-full"
+                placeholder="Buscar contacto..."
+            />
+        </div>
+
+        <ul class="divide-y divide-gray-200">
+            <li
+                (click)="createContact()"
+                class="flex items-center py-4 px-6 cursor-pointer hover:bg-slate-100"
+            >
+                <div
+                    class="flex justify-center items-center size-12 rounded-full bg-red-500 text-white font-bold text-2xl text-center mr-4"
+                >
+                    +
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-lg font-medium text-gray-800">
+                        Agregar contacto
+                    </h2>
+                </div>
+            </li>
+
+            @for(contact of contacts(); track $index) {
+            <li
+                class="flex flex-col md:flex-row items-center py-4 px-6 cursor-pointer hover:bg-slate-100"
+                (click)="openContactDetails(contact)"
+            >
+                <div
+                    class="flex justify-center items-center size-12 min-w-12 rounded-full bg-blue-500 text-white font-bold text-2xl text-center mr-4"
+                >
+                    {{ contact.name[0] }}
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-lg font-medium text-gray-800">
+                        {{ contact.name }}
+                    </h1>
+
+                    <p class="text-sm text-gray-600">
+                        {{ getFirstPhoneNumber(contact) }}
+                    </p>
+
+                    <p class="text-sm text-gray-600">
+                        {{ getFirstEmail(contact) }}
+                    </p>
+                </div>
+                <div class="flex md:items-center ml-2">
+                    <span class="text-xs text-gray-500">{{
+                        contact.company
+                    }}</span>
+                </div>
+            </li>
+            }
+        </ul>
+    </section>
+
+    <section class="w-1/2 bg-white border shadow-lg overflow-auto scrollable">
+        <div
+            class="h-full flex flex-col justify-center items-center bg-gray-50 p-5 text-center"
+        >
+            <h1 class="text-4xl font-bold mt-2 mb-6">
+                Bienvenido a <br />tu aplicación de contactos.
+            </h1>
+
+            <img
+                width="176"
+                class="w-44"
+                src="images/contact-detail.png"
+                alt=""
+            />
+            <p class="px-4 leading-relaxed">
+                Organiza y conecta con amigos y familiares de manera fácil y
+                rápida.<br />
+                Mantén tus relaciones al día sin complicaciones.
+            </p>
+            <p class="mb-8 mt-4 px-4 leading-relaxed">
+                ¡Y lo mejor de todo...
+                <span class="text-blue-600 font-bold">es gratis!</span>
+            </p>
+        </div>
+    </section>
+</main>
