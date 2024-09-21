@@ -1,3 +1,23 @@
+@if (!contact){
+<div
+    class="h-full flex flex-col justify-center items-center bg-gray-50 p-5 text-center"
+>
+    <h1 class="text-4xl font-bold mt-2 mb-6">
+        Bienvenido a <br />tu aplicación de contactos.
+    </h1>
+
+    <img width="176" class="w-44" src="images/contact-detail.png" alt="" />
+    <p class="px-4 leading-relaxed">
+        Organiza y conecta con amigos y familiares de manera fácil y rápida.<br />
+        Mantén tus relaciones al día sin complicaciones.
+    </p>
+    <p class="mb-8 mt-4 px-4 leading-relaxed">
+        ¡Y lo mejor de todo...
+        <span class="text-blue-600 font-bold">es gratis!</span>
+    </p>
+</div>
+} @else {
+
 <div class="w-full overflow-hiddend">
     <div class="flex flex-col p-4">
         <div class="flex">
@@ -42,3 +62,4 @@
         </div>
     </div>
 </div>
+}

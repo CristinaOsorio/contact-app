@@ -1,4 +1,10 @@
-import { Component, Input } from '@angular/core';
+import {
+    Component,
+    inject,
+    Input,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import {
     faTrash,
     faPen,
@@ -16,6 +22,7 @@ import {
 import { Contact } from '../../../../core/interfaces/contact.interface';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
+import { ContactService } from '../../../../core/services/contact.service';
 
 @Component({
     selector: 'app-contact-detail',
@@ -24,8 +31,11 @@ import { CommonModule } from '@angular/common';
     templateUrl: './contact-detail.component.html',
     styleUrl: './contact-detail.component.css',
 })
-export class ContactDetailComponent {
-    @Input() contact!: Contact;
+export default class ContactDetailComponent implements OnChanges {
+    @Input() id!: Contact;
+    contact!: Contact;
+
+    contactService = inject(ContactService);
 
     faTrash = faTrash;
     faPen = faPen;
@@ -45,9 +55,18 @@ export class ContactDetailComponent {
         icon: IconDefinition;
     }[] = [];
 
-    ngOnChanges() {
-        if (this.contact) {
-            this.updateContactInfo();
+    ngOnInit(): void {}
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['id'] && changes['id'].currentValue) {
+            this.contactService
+                .getById(Number(this.id))
+                .subscribe((contact) => {
+                    this.contact = contact as Contact;
+                    if (this.contact) {
+                        this.updateContactInfo();
+                    }
+                });
         }
     }
 
