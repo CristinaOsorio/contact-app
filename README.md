@@ -1,27 +1,90 @@
-# ContactApp
+# Proyecto de Gestión de Contactos - Front-End
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.2.
+Este repositorio contiene el front-end para la aplicación de gestión de contactos. Está construido utilizando Angular y Tailwind CSS, y proporciona una interfaz para interactuar con la API del back-end, permitiendo la visualización, creación y edición de registros de contactos.
 
-## Development server
+## Índice
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+-   [Características](#características)
+-   [Tecnologías](#tecnologías)
+-   [Instalación](#instalación)
+-   [Uso](#uso)
 
-## Code scaffolding
+## Características
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+-   **Visualización de Contactos**: Página principal que lista todos los registros de contactos.
+-   **Creación de Contactos**: Vista para agregar nuevos registros de contactos.
+-   **Edición de Contactos**: Vista para actualizar los datos de los registros existentes.
+-   **Gestión de Relaciones**: Capacidad de gestionar números de teléfono, correos electrónicos y direcciones asociadas a los contactos.
 
-## Build
+## Tecnologías
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+-   **Angular**: Framework para construir la interfaz de usuario.
+-   **Tailwind CSS**: Biblioteca de utilidades para estilos y diseño.
+-   **TypeScript**: Lenguaje de programación utilizado en el desarrollo.
+-   **RxJS**: Biblioteca para la gestión de eventos y programación reactiva.
+-   **HttpClient**: Módulo de Angular para realizar solicitudes HTTP a la API.
 
-## Running unit tests
+## Instalación
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. **Clonar el repositorio:**
 
-## Running end-to-end tests
+    ```bash
+    git clone https://github.com/CristinaOsorio/contact-app
+    ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2. **Navegar al directorio del proyecto:**
 
-## Further help
+    ```bash
+    cd contact-app
+    ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+3. **Instalar `nvm` (Node Version Manager) [Opcional]:**
+
+    Si prefieres usar `nvm` para gestionar versiones de Node.js, sigue las instrucciones en la [documentación oficial de nvm](https://github.com/nvm-sh/nvm#installing-and-updating) para instalarlo.
+
+    Luego, instala la versión recomendada de Node.js especificada en el archivo `.nvmrc`:
+
+    ```bash
+    nvm install
+    ```
+
+    Asegúrate de usar la versión correcta con:
+
+    ```bash
+    nvm use
+    ```
+
+    **Nota:** Si no utilizas `nvm`, asegúrate de tener la versión recomendada de Node.js instalada. La versión requerida está especificada en el archivo `.nvmrc`.
+
+4. **Instalar las dependencias:**
+
+    ```bash
+    npm install
+    ```
+
+5. **Configurar la URL de la API:**
+
+    Edita el archivo `src/environments/environment.ts` y configura la URL de la API:
+
+    ```typescript
+    export const environment = {
+        apiUrl: 'http://localhost:3000/api',
+    };
+    ```
+
+6. **Iniciar el servidor de desarrollo:**
+
+    ```bash
+    ng serve
+    ```
+
+    La aplicación estará disponible en `http://localhost:4200`.
+
+## Uso
+
+Una vez que el servidor esté en funcionamiento, puedes interactuar con la aplicación en la página principal en `http://localhost:4200/contacts`. Desde allí, puedes:
+
+-   **Ver la lista de contactos**: La página principal muestra una lista de todos los contactos almacenados en la base de datos.
+-   **Crear un nuevo contacto**: Utiliza la vista lateral para agregar un nuevo contacto a la base de datos.
+-   **Editar un contacto existente**: Usa la vista lateral para actualizar los detalles de un contacto seleccionado.
+-   **Eliminar un contacto**: Utiliza la opción de eliminación para eliminar un contacto seleccionado.
